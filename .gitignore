@@ -1,8 +1,7 @@
 .idea
+lesson*.md
 out
 target
 *.iml
 log
-
-
-
+*.patch
