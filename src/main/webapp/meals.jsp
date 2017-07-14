@@ -9,17 +9,18 @@
     <h2><a href="index.html">Home</a></h2>
     <h2>Meal list</h2>
 
-    <table style="border: 1px solid #777">
+    <table style="border: 1px solid #777; margin-bottom: 30px">
         <thead>
             <tr>
-                <th hidden="true">ID</th>
-                <th style="border: 1px solid #777">Дата</th>
-                <th style="border: 1px solid #777">Описание</th>
-                <th style="border: 1px solid #777">Калории</th>
+                <th style="border: 1px solid #777; padding: 5px 20px">Дата</th>
+                <th style="border: 1px solid #777; padding: 5px 20px">Описание</th>
+                <th style="border: 1px solid #777; padding: 5px 20px">Калории</th>
+                <th style="padding: 5px 20px"></th>
+                <th style="padding: 5px 20px"></th>
             </tr>
         </thead>
         <tbody>
-            <c:forEach var="meal" items="${mealList}">
+            <c:forEach var="meal" items="${meals}">
                 <c:if test="${meal.exceed == true}">
                     <tr style="color: red">
                 </c:if>
@@ -29,9 +30,12 @@
                     <td style="border: 1px solid #777; padding: 5px 20px"><c:out value="${meal.dateTime}" /></td>
                     <td style="border: 1px solid #777; text-align: center"><c:out value="${meal.description}" /></td>
                     <td style="border: 1px solid #777; padding: 5px 10px; text-align: right"><c:out value="${meal.calories}" /></td>
+                    <td><a href="meals?action=edit&mealTime=<c:out value="${meal.dateTime}"/>"><button>Edit</button></a></td>
+                    <td><a href="meals?action=delete&mealTime=<c:out value="${meal.dateTime}"/>"><button>Delete</button></a></td>
                 </tr>
             </c:forEach>
         </tbody>
     </table>
+    <a href="meals?action=insert"><button>Add Meal</button></a>
 </body>
 </html>
