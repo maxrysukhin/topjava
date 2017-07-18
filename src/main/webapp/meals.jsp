@@ -13,6 +13,11 @@
         .exceeded {
             color: red;
         }
+
+
+        .filter__line {
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -20,6 +25,20 @@
     <h2><a href="index.html">Home</a></h2>
     <h2>Meal list</h2>
     <a href="meals?action=create">Add Meal</a>
+    <hr>
+        <h3>Моя еда</h3>
+    <form action="meals" method="GET">
+        <input type="hidden" name="action" value="filter">
+        <div class="filter">
+            <span class="filter__line">От даты</span><input type="date" name="startDate">
+            <span class="filter__line">От времени</span><input type="time" name="startTime">
+        </div>
+        <div class="filter">
+            <span class="filter__line">До даты</span><input type="date" name="endDate">
+            <span class="filter__line">До времени</span><input type="time" name="endTime">
+        </div>
+        <input type="submit" value="Filter">
+    </form>
     <hr>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
