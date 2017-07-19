@@ -20,8 +20,8 @@ INSERT INTO meals (user_id, description, calories, datetime) VALUES
 INSERT INTO meals (user_id, description, calories, datetime) VALUES
   (100000, 'Ужин', 500, '2016-01-02 20:00:00');
 INSERT INTO meals (user_id, description, calories, datetime) VALUES
-  (100001, 'Завтрак', 500, '2016-01-03 10:00:00');
+  (100001, 'Завтрак', 500, '2016-01-02 10:00:00');
 INSERT INTO meals (user_id, description, calories, datetime) VALUES
   (100001, 'Обед', 1000, '2016-01-03 13:00:00');
 INSERT INTO meals (user_id, description, calories, datetime) VALUES
-  (100001, 'Ужин', 510, '2016-01-03 20:00:00');
+  (100001, 'Ужин', 510, '2016-01-04 20:00:00');
