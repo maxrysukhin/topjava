@@ -14,9 +14,21 @@ import java.time.LocalTime;
  * 11.01.2015.
  */
 
+@NamedQueries({
+        @NamedQuery(name = Meal.GET, query = "SELECT m FROM Meal m WHERE m.user.id=:userId AND m.id=:id"),
+        @NamedQuery(name = Meal.GET_ALL, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY date_time DESC"),
+        @NamedQuery(name = Meal.GET_BETWEEN, query = "SELECT m FROM Meal m WHERE m.user.id=?1 AND " +
+                " date_time BETWEEN ?2 AND ?3 ORDER BY date_time DESC"),
+        @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=?1 AND m.user.id=?2")
+})
 @Entity
 @Table(name = "meals")
 public class Meal extends BaseEntity {
+
+    public static final String GET = "Meal.get";
+    public static final String GET_BETWEEN = "Meal.getBetween";
+    public static final String GET_ALL = "Meal.getAll";
+    public static final String DELETE = "Meal.delete";
 
     @Column(name = "date_time", nullable = false, unique = true)
     @NotNull
