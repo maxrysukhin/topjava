@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.to;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 
 /**
@@ -7,15 +9,19 @@ import java.time.LocalDateTime;
  * 11.01.2015.
  */
 public class MealWithExceed {
-    private final Integer id;
+    private Integer id;
 
-    private final LocalDateTime dateTime;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime dateTime;
 
-    private final String description;
+    private String description;
 
-    private final int calories;
+    private int calories;
 
-    private final boolean exceed;
+    private boolean exceed;
+
+    public MealWithExceed() {
+    }
 
     public MealWithExceed(Integer id, LocalDateTime dateTime, String description, int calories, boolean exceed) {
         this.id = id;
