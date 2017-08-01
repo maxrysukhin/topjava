@@ -35,6 +35,7 @@ function updateTable() {
         $.each(data, function (key, item) {
             datatableApi.row.add(item);
         });
+        datatableApi.column(0).data().sort();
         datatableApi.draw();
     });
 }
