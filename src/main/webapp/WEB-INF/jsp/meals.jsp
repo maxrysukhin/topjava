@@ -4,6 +4,8 @@
 <%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
+<script type="text/javascript" src="resources/js/datatablesUtil.js" defer></script>
+<script type="text/javascript" src="resources/js/mealDataTables.js" defer></script>
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 
@@ -57,10 +59,10 @@
                             </td>
                             <td>${meal.description}</td>
                             <td>${meal.calories}</td>
-                            <td><a href="meals/update?id=${meal.id}" class="btn btn-xs btn-primary edit">
+                            <td><a href="#editRow" data-toggle="modal" class="btn btn-xs btn-primary edit">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                             </a></td>
-                            <td><a href="meals/delete?id=${meal.id}" class="btn btn-xs btn-danger delete" >
+                            <td><a class="btn btn-xs btn-danger delete" id="${meal.id}" >
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             </a></td>
                         </tr>
