@@ -18,10 +18,11 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 public abstract class AbstractMealController {
-    private final Logger LOG = LoggerFactory.getLogger(getClass());
+    protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private MealService service;
+    private final MealService service;
+
+    public AbstractMealController(MealService service) {this.service = service;}
 
     public Meal get(int id) {
         int userId = AuthorizedUser.id();
@@ -51,6 +52,12 @@ public abstract class AbstractMealController {
     public void update(Meal meal, int id) {
         int userId = AuthorizedUser.id();
         checkIdConsistent(meal, id);
+        LOG.info("update {} for User {}", meal, userId);
+        service.update(meal, userId);
+    }
+
+    public void update(Meal meal) {
+        int userId = AuthorizedUser.id();
         LOG.info("update {} for User {}", meal, userId);
         service.update(meal, userId);
     }
