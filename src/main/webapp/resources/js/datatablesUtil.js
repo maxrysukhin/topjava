@@ -32,9 +32,16 @@ function updateRow(id) {
 }
 
 function deleteRow(id) {
+
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var token = $("meta[name='_csrf']").attr("content");
+
     $.ajax({
         url: ajaxUrl + id,
         type: 'DELETE',
+        beforeSend: function(xhr){
+            xhr.setRequestHeader(header, token);
+        },
         success: function () {
             updateTable();
             successNoty('common.deleted');
@@ -47,10 +54,17 @@ function updateTableByData(data) {
 }
 
 function save() {
+
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var token = $("meta[name='_csrf']").attr("content");
+
     $.ajax({
         type: "POST",
         url: ajaxUrl,
         data: form.serialize(),
+        beforeSend: function(xhr){
+            xhr.setRequestHeader(header, token);
+        },
         success: function () {
             $('#editRow').modal('hide');
             updateTable();
