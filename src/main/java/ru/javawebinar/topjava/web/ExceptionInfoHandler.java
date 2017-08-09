@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.util.exception.ApplicationException;
 import ru.javawebinar.topjava.util.exception.ErrorInfo;
-import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -23,18 +22,10 @@ import java.util.Arrays;
 @ControllerAdvice(annotations = RestController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class ExceptionInfoHandler {
-    private static Logger LOG = LoggerFactory.getLogger(ExceptionInfoHandler.class);
+    private static Logger log = LoggerFactory.getLogger(ExceptionInfoHandler.class);
 
     @Autowired
     private MessageUtil messageUtil;
-
-    //  http://stackoverflow.com/a/22358422/548473
-    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseBody
-    public ErrorInfo handleError(HttpServletRequest req, NotFoundException e) {
-        return logAndGetErrorInfo(req, e, false);
-    }
 
     @ResponseStatus(value = HttpStatus.CONFLICT)  // 409
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -53,7 +44,7 @@ public class ExceptionInfoHandler {
     @ExceptionHandler(ApplicationException.class)
     @ResponseBody
     public ResponseEntity<ErrorInfo> applicationError(HttpServletRequest req, ApplicationException appEx) {
-        return getErrorInfoResponseEntity(req, appEx, appEx.getMsgCode(), appEx.getHttpStatus());
+        return getErrorInfoResponseEntity(req, appEx, appEx.getMsgCode(), appEx.getHttpStatus(), appEx.getArgs());
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422
@@ -81,21 +72,21 @@ public class ExceptionInfoHandler {
     private static ErrorInfo logAndGetErrorInfo(HttpServletRequest req, Exception e, boolean logException) {
         Throwable rootCause = ValidationUtil.getRootCause(e);
         if (logException) {
-            LOG.error("Exception at request {}" + req.getRequestURL(), rootCause);
+            log.error("Exception at request " + req.getRequestURL(), rootCause);
         } else {
-            LOG.warn("Exception at request {}: {}", req.getRequestURL() + ": " + rootCause.toString());
+            log.warn("Exception at request {}: {}", req.getRequestURL(), rootCause.toString());
         }
         return new ErrorInfo(req.getRequestURL(), rootCause);
     }
 
     private static ErrorInfo logAndGetErrorInfo(HttpServletRequest req, String cause, String... details) {
-        LOG.warn("{} exception at request {}: {}", cause, req.getRequestURL(), Arrays.toString(details));
+        log.warn("{} exception at request {}: {}", cause, req.getRequestURL(), Arrays.toString(details));
         return new ErrorInfo(req.getRequestURL(), cause, details);
     }
 
-    public ResponseEntity<ErrorInfo> getErrorInfoResponseEntity(HttpServletRequest req, Exception e, String msgCode, HttpStatus httpStatus) {
-        LOG.warn("Application error: {}", ValidationUtil.getRootCause(e).toString());
-        ErrorInfo errorInfo = logAndGetErrorInfo(req, ValidationUtil.getRootCause(e).getClass().getSimpleName(), messageUtil.getMessage(msgCode));
+    public ResponseEntity<ErrorInfo> getErrorInfoResponseEntity(HttpServletRequest req, Exception e, String msgCode, HttpStatus httpStatus, String... args) {
+        log.warn("Application error: {}", ValidationUtil.getRootCause(e).toString());
+        ErrorInfo errorInfo = logAndGetErrorInfo(req, ValidationUtil.getRootCause(e).getClass().getSimpleName(), messageUtil.getMessage(msgCode, args));
         return new ResponseEntity<>(errorInfo, httpStatus);
     }
 }
